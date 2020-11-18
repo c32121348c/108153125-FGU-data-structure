@@ -1,5 +1,4 @@
 #include <iostream>
-
 using namespace std;
 
 struct Node {
@@ -24,14 +23,17 @@ void append_data(Node *node, int data) {
 }
 
 void remove_data(Node *node, int data) {
+    Node *p = new Node();
     while (node->next != nullptr) {
         Node *dummy = node->next;   // 候選節點
 
         if (dummy->data == data) {  // 找到了？
+            p = node;
             node->next = dummy->next;
-            node->mae = dummy->mae;
-            delete dummy;   // 釋放記憶體
+            node = node->next;
+            node->mae = p;
 
+            delete dummy;   // 釋放記憶體
             break;
         }
         node = node->next;
@@ -39,29 +41,20 @@ void remove_data(Node *node, int data) {
 }
 
 void dump_list(Node *node) {
-    cout << "  Linked List:" << endl;
-    cout << "    ";
+    cout << "Linked List: ";
     while (node->next != nullptr) {
         node = node->next;
         
-        cout << "[" << node->data << "] ";
-        //cout << node->mae << "[" << node->data  << " " << node << "]" << node->next << "-";  //顯示指標
+        //cout << "[" << node->data << "] ";
+        cout << node->mae << "[" << node->data  << " " << node << "]" << node->next << "-";  //顯示前後指標
     }
     cout << "$" << endl;
-
-    // cout << "  Reverse Linked List:" << endl;
-    // cout << "    ";
-    // while (node->mae != nullptr) {
-    //     cout << "[" << node->data << "] ";
-    //     node = node->mae;
-    // }
-    // cout << "$" << endl;
 }
 
 Node *new_list(int len) {
     Node *head = new Node();
     Node *node = head;
-    Node *p = NULL;
+    Node *p = nullptr;
     for (int i = 1; i <= len; i ++) {
         p = node;
         node->next = new Node();
@@ -76,8 +69,8 @@ Node *new_list(int len) {
 
 int main(int argc, char *argv[]){
     Node *head = new_list(3);
-    //cout << "head:" << head; //顯示head
-    //append_data(head, 99);
-    //remove_data(head, 2);
+    cout << "head:" << head << endl; //顯示head
+    append_data(head, 99);
+    remove_data(head, 2);
     dump_list(head);
 }
